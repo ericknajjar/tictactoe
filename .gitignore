@@ -1,0 +1,15 @@
+sysinfo.txt
+*.csproj
+*.pidb
+*.sln
+*.userprefs
+*.pidb.meta
+Library/
+Temp/
+*.unityproj
+*test-results/
+UnitTestResults.xml
+obj/
+.vs/
+builds/
+steamworks_sdk/
