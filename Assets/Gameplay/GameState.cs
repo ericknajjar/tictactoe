@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Gameplay
 {
@@ -8,14 +9,26 @@ namespace Gameplay
 public class GameState 
 {
 
-		public GameState(Player player)
+		public GameState(Player player): this(new List<Move>{ new Move(Point.Make(0,0)),  new Move(Point.Make(1,1)),  new Move(Point.Make(1,1)),
+			new Move(Point.Make(1,1)), new Move(Point.Make(1,1)),  new Move(Point.Make(1,1)), 
+			new Move(Point.Make(1,1)),  new Move(Point.Make(1,1)),  new Move(Point.Make(1,1)) })
 		{
 
 		}
 
-		public IList<object> PossibleMoves
+		private GameState(IList<Move> posibleMoves)
 		{
-			get{return new List<object>{1,1,1,1,1,1,1,1,1};}
+			PossibleMoves = posibleMoves;
+		}
+
+		public GameState PickAMove(Move move)
+		{
+			return new GameState (PossibleMoves.Skip (1).ToList());
+		}
+
+		public IList<Move> PossibleMoves {
+			get;
+			private set;
 		}
 	
 }

@@ -44,8 +44,6 @@ namespace AI
 
 	public class MiniMaxAI<State,Move> where State : IState<Move> where Move: IMove
 	{
-		
-
 		public MiniMaxAI()
 		{
 			
