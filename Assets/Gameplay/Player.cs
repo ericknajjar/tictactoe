@@ -4,15 +4,18 @@ namespace Gameplay
 {
 	public class Player
 	{
-		private Player ()
+		string m_name;
+
+		private Player (string name)
 		{
+			m_name = name;
 		}
 
 		static Player()
 		{
-			X = new Player ();
-			O = new Player ();
-			None = new Player ();
+			X = new Player ("X");
+			O = new Player ("O");
+			None = new Player ("None");
 		}
 
 		public Player Other
@@ -26,7 +29,12 @@ namespace Gameplay
 
 				return X;
 			}
-		} 
+		}
+
+		public override string ToString ()
+		{
+			return m_name;
+		}
 
 		public static Player X {
 			get;

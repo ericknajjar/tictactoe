@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
 using NUnit.Framework;
 using Moq;
 using System.Collections.Generic;
@@ -12,6 +11,13 @@ namespace Gameplay
 	[TestFixture]
 	public class GameStateTests 
 	{
+		List<Point> m_starterWins = new List<Point>{
+			Point.Make(0,0),Point.Make(0,2),Point.Make(1,0),Point.Make(1,2),Point.Make(2,0)
+		};
+
+		List<Point> m_secondWins = new List<Point>{
+			Point.Make(0,0),Point.Make(0,2),Point.Make(1,0),Point.Make(1,2),Point.Make(2,1),Point.Make(2,2)
+		};
 
 		[Test]
 		public void EmptyBoardMustHave9PossibleMoves()
@@ -110,6 +116,82 @@ namespace Gameplay
 			gameState = gameState.PickAMove (move);
 
 			Assert.AreEqual (Player.O, gameState.CurrentPlayer);
+		}
+
+		[Test]
+		public void XIsVictorious()
+		{
+			var gameState = new GameState (Player.X);
+
+			foreach(var target in m_starterWins)
+			{
+				gameState = gameState.PickAMove (new Move (target));
+			}
+
+			Assert.AreEqual (Player.X, gameState.Winner);
+		}
+
+		[Test]
+		public void OIsVictorious()
+		{
+			var gameState = new GameState (Player.O);
+
+			foreach(var target in m_starterWins)
+			{
+				gameState = gameState.PickAMove (new Move (target));
+			}
+
+			Assert.AreEqual (Player.O, gameState.Winner);
+		
+		}
+
+		[Test]
+		public void OOtherVictoriousO()
+		{
+			var gameState = new GameState (Player.X);
+
+			foreach(var target in m_secondWins)
+			{
+				gameState = gameState.PickAMove (new Move (target));
+			}
+
+			Assert.AreEqual (Player.O, gameState.Winner);
+		}
+
+
+		[Test]
+		public void OtherVictoriousX()
+		{
+			var gameState = new GameState (Player.O);
+
+			foreach(var target in m_secondWins)
+			{
+				gameState = gameState.PickAMove (new Move (target));
+			}
+
+			Assert.AreEqual (Player.X, gameState.Winner);
+		}
+
+		[Test]
+		public void NoneVictoriousAfterSingleMove()
+		{
+			var gameState = new GameState (Player.X);
+
+			foreach(var target in m_secondWins)
+			{
+				gameState = gameState.PickAMove (new Move (target));
+				break;
+			}
+
+			Assert.AreEqual (Player.None, gameState.Winner);
+		}
+
+		[Test]
+		public void EmptyStateNoVictory()
+		{
+			var gameState = new GameState (Player.X);
+
+			Assert.AreEqual (Player.None, gameState.Winner);
 		}
 	}
 }

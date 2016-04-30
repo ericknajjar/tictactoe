@@ -6,8 +6,6 @@ public struct Point
 	public int X{ get; private set;}
 	public int Y{ get; private set;}
 
-
-
 	public static Point Make(int x, int y)
 	{
 		var p = new Point ();
@@ -39,3 +37,5 @@ public struct Point
 	}
 	
 }
+
+

@@ -11,6 +11,7 @@ namespace Gameplay
 public class GameState 
 {
 		public Player CurrentPlayer{ get; private set;}
+		public Player Winner{ get{ return m_board.TrippletOwner;}}
 
 		Board m_board;
 
@@ -66,15 +67,47 @@ public class GameState
 
 			public Board()
 			{
+				TrippletOwner = Player.None;
 				m_board = new Cell[3,3];
 				ForEachPoint((p)=>{
 					m_board[p.X,p.Y] = new Cell(Player.None);
 				});
 			}
 
+			public Player TrippletOwner {
+				get;
+				private set;
+			}
+
 			private Board(Cell[,] rawData)
 			{
 				m_board = rawData;
+
+				int playerX = 0;
+				int playerO = 0;
+
+				ForeachCell((cell,p)=>
+				{
+					if(cell.Owner.Equals(Player.X))
+					{
+							
+							++playerX;
+					}
+					else if(cell.Owner.Equals(Player.O))
+					{
+							++playerO;
+					}
+
+				});
+
+				if(playerO>2)
+					TrippletOwner = Player.O;
+				else if(playerX >2)
+					TrippletOwner = Player.X;
+				
+				else
+					TrippletOwner = Player.None;
+					
 			}
 
 			public Cell this[Point p]
@@ -95,7 +128,8 @@ public class GameState
 
 				rawData[target.X, target.Y] = new Cell(player);
 
-				return new Board (rawData);
+				var ret = new Board (rawData);
+				return ret;
 			}
 
 			private static void ForEachPoint(System.Action<Point> func)
