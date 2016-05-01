@@ -158,7 +158,7 @@ namespace Gameplay
 			Assert.AreEqual (Player.O, gameState.Winner);
 		}
 
-		/*
+
 		[Test]
 		public void OtherVictoriousX()
 		{
@@ -170,7 +170,7 @@ namespace Gameplay
 			}
 
 			Assert.AreEqual (Player.X, gameState.Winner);
-		}*/
+		}
 
 		[Test]
 		public void NoneVictoriousAfterSingleMove()

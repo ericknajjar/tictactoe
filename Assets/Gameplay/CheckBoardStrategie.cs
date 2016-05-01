@@ -17,6 +17,7 @@ namespace Gameplay
 			foreach(var checkStrategy in m_strategies)
 			{
 				var checkResult = checkStrategy (board);
+		
 				if (!checkResult.Equals (Player.None))
 					return checkResult;
 			}
@@ -52,9 +53,21 @@ namespace Gameplay
 		{
 			List<Point> list = new List<Point> (3);
 
-			for (int i = 0; i < 2; ++i) 
+			for (int i = 0; i < 3; ++i) 
 			{
 				list.Add(Point.Make(i,index));
+			}
+
+			return list;
+		}
+
+		static IList<Point> MakeColumn(int index)
+		{
+			List<Point> list = new List<Point> (3);
+
+			for (int i = 0; i < 3; ++i) 
+			{
+				list.Add(Point.Make(index,i));
 			}
 
 			return list;
@@ -69,15 +82,18 @@ namespace Gameplay
 				var point = points[i];
 				var cell = b [point];
 
+				System.Console.WriteLine (cell.Owner);
 				if(i==0)
 					player = cell.Owner;
 				else
 				{
-					if(!player.Equals(cell.Owner))
+					if (!player.Equals (cell.Owner)) 
+					{
 						return Player.None;
+					}
 				}
-			}
 
+			}
 			return player;
 		}
 
@@ -101,17 +117,20 @@ namespace Gameplay
 
 		public static Player FirstColumn(IBoard b)
 		{
-			return Player.None;
+			var column = MakeColumn (0);
+			return Check (b, column);
 		}
 
 		public static Player SecondColumn(IBoard b)
 		{
-			return Player.None;
+			var column = MakeColumn (1);
+			return Check (b, column);
 		}
 
 		public static Player ThirdColumn(IBoard b)
 		{
-			return Player.None;
+			var column = MakeColumn (2);
+			return Check (b, column);
 		}
 
 		public static Player LeftRightDiagonal(IBoard b)

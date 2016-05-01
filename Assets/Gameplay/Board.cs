@@ -46,6 +46,7 @@ namespace Gameplay
 			rawData[target.X, target.Y] = new Cell(player);
 
 			var ret = new Board (rawData, new CheckBoardStrategie(target));
+
 			return ret;
 		}
 
