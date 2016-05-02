@@ -48,6 +48,11 @@ public class GameState
 			return new GameState (CurrentPlayer.Other, newBoard);
 		}
 
+		public void ForEachCell(System.Action<Cell,Point> visitor)
+		{
+			m_board.ForeachCell (visitor);
+		}
+
 		public Cell this[Point p]
 		{
 			get

@@ -16,6 +16,8 @@ namespace View
 			SceneManager.LoadScene (1);
 		}
 
+
+
 		public void OnQuitClick()
 		{
 			#if UNITY_EDITOR

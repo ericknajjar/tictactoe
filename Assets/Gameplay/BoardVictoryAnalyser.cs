@@ -71,7 +71,7 @@ namespace Gameplay
 			List<Point> list = new List<Point> (3);
 
 			int offset = (int)direction;
-			for (int i = 0; i < 2; ++i)
+			for (int i = 0; i < 3; ++i)
 			{
 				int x = Mathf.Abs(offset -i);
 				int y = i;

@@ -122,6 +122,18 @@ namespace Gameplay
 
 			Assert.AreEqual (Player.O, board.TrippletOwner);
 		}
+
+		[Test]
+		public void NoVitory()
+		{
+			var board = new Board ();
+
+			board = board.SetCellOwner (Player.X, Point.Make (0, 0));
+			board = board.SetCellOwner (Player.O, Point.Make (1, 0));
+			board = board.SetCellOwner (Player.X, Point.Make (1, 1));
+
+			Assert.AreEqual (Player.None, board.TrippletOwner);
+		}
 	}
 }
 
