@@ -94,6 +94,34 @@ namespace Gameplay
 
 			Assert.AreEqual (Player.None, board.TrippletOwner);
 		}
+
+		[Test]
+		public void LeftRightDiagonal()
+		{
+			var board = new Board ();
+
+			board = board.SetCellOwner (Player.O, Point.Make (0, 0));
+			board = board.SetCellOwner (Player.O, Point.Make (1, 1));
+			board = board.SetCellOwner (Player.O, Point.Make (2, 2));
+			board = board.SetCellOwner (Player.X, Point.Make (0, 1));
+			board = board.SetCellOwner (Player.X, Point.Make (0, 2));
+
+			Assert.AreEqual (Player.O, board.TrippletOwner);
+		}
+
+		[Test]
+		public void RightLeftDiagonal()
+		{
+			var board = new Board ();
+
+			board = board.SetCellOwner (Player.O, Point.Make (2, 0));
+			board = board.SetCellOwner (Player.O, Point.Make (1, 1));
+			board = board.SetCellOwner (Player.O, Point.Make (0, 2));
+			board = board.SetCellOwner (Player.X, Point.Make (2, 1));
+			board = board.SetCellOwner (Player.X, Point.Make (2, 2));
+
+			Assert.AreEqual (Player.O, board.TrippletOwner);
+		}
 	}
 }
 

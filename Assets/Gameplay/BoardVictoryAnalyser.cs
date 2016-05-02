@@ -1,16 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using UnityEngine;
 namespace Gameplay
 {
 	public delegate Player CheckBoardStrategieDelegate(IBoard b);
 
-	public class CheckBoardStrategie
+	public class BoardVictoryAnalyser
 	{
 		HashSet<CheckBoardStrategieDelegate> m_strategies = new HashSet<CheckBoardStrategieDelegate>();
 
 		static readonly CheckBoardStrategieDelegate[] s_rows = new CheckBoardStrategieDelegate[]{FirstRow,SecondRow,ThirdRow};
 		static readonly CheckBoardStrategieDelegate[] s_columns = new CheckBoardStrategieDelegate[]{FirstColumn,SecondColumn,ThirdColumn};
+
+		enum DiagonalDirection
+		{
+			LeftRight = 0, RightLeft = 2
+		}
 
 		public Player Check(IBoard board)
 		{
@@ -25,7 +30,7 @@ namespace Gameplay
 			return Player.None;
 		}
 
-		public CheckBoardStrategie(Point p)
+		public BoardVictoryAnalyser(Point p)
 		{
 			
 			m_strategies.Add (s_rows[p.Y]);
@@ -56,6 +61,22 @@ namespace Gameplay
 			for (int i = 0; i < 3; ++i) 
 			{
 				list.Add(Point.Make(i,index));
+			}
+
+			return list;
+		}
+
+		static IList<Point> MakeDiagonal(DiagonalDirection direction)
+		{
+			List<Point> list = new List<Point> (3);
+
+			int offset = (int)direction;
+			for (int i = 0; i < 2; ++i)
+			{
+				int x = Mathf.Abs(offset -i);
+				int y = i;
+
+				list.Add (Point.Make(x,y));
 			}
 
 			return list;
@@ -135,12 +156,14 @@ namespace Gameplay
 
 		public static Player LeftRightDiagonal(IBoard b)
 		{
-			return Player.None;
+			var diagonal = MakeDiagonal (DiagonalDirection.LeftRight);
+			return Check(b,diagonal);
 		}
 
 		public static Player RightLeftDiagonal(IBoard b)
 		{
-			return Player.None;
+			var diagonal = MakeDiagonal (DiagonalDirection.RightLeft);
+			return Check(b,diagonal);
 		}
 			
 		public static IList<CheckBoardStrategieDelegate> All

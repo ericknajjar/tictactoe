@@ -20,12 +20,20 @@ namespace Gameplay
 			private set;
 		}
 
-		private Board(Cell[,] rawData,CheckBoardStrategie checkStrategie)
+		private Board(Cell[,] rawData,BoardVictoryAnalyser checkStrategie)
 		{
 			m_board = rawData;
 			TrippletOwner = checkStrategie.Check(this);
 
 		}
+
+		private Board(Cell[,] rawData,Player tripletOwner)
+		{
+			m_board = rawData;
+			TrippletOwner = tripletOwner;
+
+		}
+
 
 		public Cell this[Point p]
 		{
@@ -45,7 +53,12 @@ namespace Gameplay
 
 			rawData[target.X, target.Y] = new Cell(player);
 
-			var ret = new Board (rawData, new CheckBoardStrategie(target));
+			Board ret = null;
+
+			if(TrippletOwner.Equals(Player.None))
+				ret = new Board (rawData, new BoardVictoryAnalyser(target));
+			else
+				ret = new Board (rawData, TrippletOwner);
 
 			return ret;
 		}
