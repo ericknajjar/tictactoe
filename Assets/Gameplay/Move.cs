@@ -34,6 +34,11 @@ namespace Gameplay
 				return Target.GetHashCode ();
 			}
 		}
+
+		public override string ToString ()
+		{
+			return string.Format ("[Move: Target={0}]", Target);
+		}
 		
 
 	}

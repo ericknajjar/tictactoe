@@ -43,6 +43,9 @@ public class GameState
 			
 		public GameState PickAMove(Move move)
 		{
+			if (!PossibleMoves.Contains (move))
+				throw new System.Exception ("Can't play an impossible move: "+move);
+			
 			var newBoard = m_board.SetCellOwner (CurrentPlayer, move.Target);
 
 			return new GameState (CurrentPlayer.Other, newBoard);
@@ -51,6 +54,13 @@ public class GameState
 		public void ForEachCell(System.Action<Cell,Point> visitor)
 		{
 			m_board.ForeachCell (visitor);
+		}
+
+		public bool IsEndState
+		{
+			get{
+				return !Winner.Equals (Player.None) || PossibleMoves.Count == 0;
+			}
 		}
 
 		public Cell this[Point p]

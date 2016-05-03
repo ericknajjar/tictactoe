@@ -103,7 +103,6 @@ namespace Gameplay
 				var point = points[i];
 				var cell = b [point];
 
-				System.Console.WriteLine (cell.Owner);
 				if(i==0)
 					player = cell.Owner;
 				else

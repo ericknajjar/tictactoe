@@ -15,10 +15,17 @@ namespace Gameplay
 			Point.Make(0,0),Point.Make(0,2),Point.Make(1,0),Point.Make(1,2),Point.Make(2,0)
 		};
 
+		List<Point> m_starterAlmosVicotirous = new List<Point>{
+			Point.Make(0,0),Point.Make(0,2),Point.Make(1,0),Point.Make(1,2)
+		};
+
 		List<Point> m_secondWins = new List<Point>{
 			Point.Make(0,0),Point.Make(0,2),Point.Make(1,0),Point.Make(1,2),Point.Make(2,1),Point.Make(2,2)
 		};
 
+		List<Point> m_draw = new List<Point> {Point.Make(1,1),Point.Make(0,0),Point.Make(0,1),
+											  Point.Make(2,1),Point.Make(0,2),Point.Make(2,0),
+											  Point.Make(1,0),Point.Make(1,2),Point.Make(2,2)};
 		[Test]
 		public void EmptyBoardMustHave9PossibleMoves()
 		{
@@ -187,11 +194,81 @@ namespace Gameplay
 		}
 
 		[Test]
+		public void CantPickAnUnavailableMove()
+		{
+			var gameState = new GameState (Player.X);
+			var move = new Move (Point.Make (0,0));
+			gameState = gameState.PickAMove (move);
+
+			Assert.Throws<Exception> (() => {
+				gameState.PickAMove(move);
+			});
+		}
+
+		[Test]
 		public void EmptyStateNoVictory()
 		{
 			var gameState = new GameState (Player.X);
 
 			Assert.AreEqual (Player.None, gameState.Winner);
+		}
+
+		[Test]
+		public void Draw()
+		{
+			var gameState = new GameState (Player.X);
+			bool alwaysNone = true;
+
+			foreach(var target in m_draw)
+			{
+				gameState = gameState.PickAMove (new Move (target));
+
+				alwaysNone = alwaysNone && gameState.Winner.Equals (Player.None);
+
+				if (!alwaysNone) {
+					Assert.Fail ( gameState.Winner+" should not have won");
+					break;
+				}
+					
+			}
+			Assert.AreEqual (0,gameState.PossibleMoves.Count, "The end game must have no possible moves");
+		}
+
+		[Test]
+		public void ShouldContainTheWinningMove()
+		{
+			var gameState = new GameState (Player.X);
+		
+
+			foreach(var target in m_starterAlmosVicotirous)
+			{
+				gameState = gameState.PickAMove (new Move (target));
+
+			}
+
+			bool contains = gameState.PossibleMoves.Contains (new Move(Point.Make(2,0)));
+			Assert.That (contains,"should contain the winning move");
+		}
+
+		[Test]
+		public void PossiblePlayDontContainAnAlreadyPlayedMove()
+		{
+			var gameState = new GameState (Player.X);
+
+			foreach(var target in m_draw)
+			{
+				var move = new Move (target);
+				gameState = gameState.PickAMove (move);
+
+				bool contains = gameState.PossibleMoves.Contains (move);
+
+				if (contains) {
+					Assert.Fail ("should not contain move "+target);
+					break;
+				}
+
+			}
+
 		}
 	}
 }

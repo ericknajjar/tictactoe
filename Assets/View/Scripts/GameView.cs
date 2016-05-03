@@ -12,6 +12,7 @@ namespace View
 		List<Text> m_allTexts = new List<Text>();
 
 		Gameplay.GameState m_gameState = new Gameplay.GameState(Gameplay.Player.X);
+		Gameplay.TicTacToeAi m_ai = new Gameplay.TicTacToeAi();
 
 		public void OnQuitClicked()
 		{
@@ -23,7 +24,13 @@ namespace View
 			if (m_gameState.Winner.Equals (Gameplay.Player.None)) 
 			{
 				var point = IndexToPoint (index);
-				MakeAPlay (point);
+				MakeAPlay (new Gameplay.Move(point));
+
+				if (!m_gameState.IsEndState) 
+				{
+					var move = m_ai.NextMove (m_gameState);
+					MakeAPlay (move);
+				}
 			}
 
 		}
@@ -35,9 +42,9 @@ namespace View
 			return Point.Make (x, y);
 		}
 
-		void MakeAPlay(Point point)
+		void MakeAPlay(Gameplay.Move move)
 		{
-			m_gameState = m_gameState.PickAMove (new Gameplay.Move (point));
+			m_gameState = m_gameState.PickAMove (move);
 			UpdateView ();
 		}
 

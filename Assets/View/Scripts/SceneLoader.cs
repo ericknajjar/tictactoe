@@ -17,7 +17,6 @@ namespace View
 		}
 
 
-
 		public void OnQuitClick()
 		{
 			#if UNITY_EDITOR
