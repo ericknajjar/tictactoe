@@ -30,26 +30,33 @@ namespace AI
 				var score = MiniMax (newState, move,alpha,beta);
 				var moveScore = new MoveScore (move, score.Score);
 
+				if (best.Move == null)
+					best = moveScore;
+
 				if (!s.Min) 
 				{
-					if (alpha < moveScore.Score) 
-					{
+					if (best.Score < moveScore.Score)
 						best = moveScore;
-						alpha = moveScore.Score;
+					
+					if (alpha < best.Score) 
+					{
+						alpha = best.Score;
 					}
 						
-					if (beta < alpha)
+					if (beta <= alpha)
 						break;
 				}
 				else 
 				{
-					if (beta > moveScore.Score)
-					{
-						beta = moveScore.Score;
+					if (best.Score > moveScore.Score)
 						best = moveScore;
+					
+					if (beta > best.Score)
+					{
+						beta = best.Score;
 					}
 
-					if (beta < alpha)
+					if (beta <= alpha)
 						break;
 				}
 			}

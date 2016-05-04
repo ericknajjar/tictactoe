@@ -4,7 +4,7 @@ using System.Collections;
 namespace Gameplay 
 {
 	
-	public struct Move 
+	public class Move 
 	{
 		Point m_target;
 
