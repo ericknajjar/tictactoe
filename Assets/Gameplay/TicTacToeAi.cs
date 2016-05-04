@@ -38,8 +38,6 @@ namespace Gameplay
 			GameState m_gameState;
 			Player m_bot;
 
-			static List<Move> s_badSecondMoves = new List<Move>{new Move(Point.Make(1,0)),new Move(Point.Make(2,1)),new Move(Point.Make(1,2)),new Move(Point.Make(0,1)) };
-
 			public AiStateAdapter(GameState state)
 			{
 				m_gameState = state;
@@ -81,26 +79,6 @@ namespace Gameplay
 			{
 				get 
 				{
-					/*
-					if (m_gameState.PossibleMoves.Count == 9)
-						return new List<Move>{  new Move (Point.Make (1, 1))};
-					else if (m_gameState.PossibleMoves.Count == 8) 
-					{
-						var bestMove = new Move (Point.Make (1, 1));
-
-						if (m_gameState.PossibleMoves.Contains (bestMove))
-							return new List<Move>{ bestMove };
-						
-						var ret = new List<Move> (m_gameState.PossibleMoves);
-
-						foreach(var bad in s_badSecondMoves)
-						{
-							ret.Remove (bad);
-						}
-
-						return ret;
-					}*/
-
 					return new List<Move> (m_gameState.PossibleMoves);
 				}
 			}
