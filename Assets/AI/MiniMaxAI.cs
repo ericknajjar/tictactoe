@@ -31,8 +31,10 @@ namespace AI
 				scores.Add (new MoveScore(move,score.Score));
 			}
 
-			scores.Sort ((a,b)=> b.CompareTo(a));
-
+			if(s.Min)
+				scores.Sort ((a,b)=> a.CompareTo(b));
+			else
+				scores.Sort ((a,b)=> b.CompareTo(a));
 
 			return scores [0];
 		}

@@ -42,6 +42,10 @@ namespace Gameplay
 				return new AiStateAdapter (m_gameState.PickAMove (move),m_bot);
 			}
 
+			public bool Min
+			{
+				get{ return !m_gameState.CurrentPlayer.Equals (m_bot);}
+			}
 			public int Score 
 			{
 				get 

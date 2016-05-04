@@ -11,5 +11,6 @@ namespace AI
 		IList<Move> AllMoves{get;}
 		IState<Move> Pick(Move move);
 		bool IsEndState{ get;}
+		bool Min{ get;}
 	}
 }
