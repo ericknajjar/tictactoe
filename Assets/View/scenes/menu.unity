@@ -350,7 +350,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1845247615}
-        m_MethodName: OnImpossibleClick
+        m_MethodName: OnPossibleClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

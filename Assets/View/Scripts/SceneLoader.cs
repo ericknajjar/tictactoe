@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using u3dExtensions.IOC;
+using u3dExtensions.IOC.extensions;
+using u3dExtensions;
 
 namespace View
 {
@@ -8,12 +11,18 @@ namespace View
 	{
 		public void OnPossibleClick()
 		{
-			SceneManager.LoadScene (1);
+			LevelLoader.LoadLevel (1).Map ((lvl) => {
+				GlobalContext.Instance.Context.Get<GameView> (InnerBindingNames.Empty,false);
+			});
+
+
 		}
 
 		public void OnImpossibleClick()
 		{
-			SceneManager.LoadScene (1);
+			LevelLoader.LoadLevel (1).Map ((lvl) => {
+				GlobalContext.Instance.Context.Get<GameView> (InnerBindingNames.Empty,true);
+			});
 		}
 
 

@@ -89,7 +89,7 @@ public class TicTacToeAiTests
 			gameState = gameState.PickAMove(aiMove);
 		}
 
-		Assert.AreEqual (Gameplay.Player.None, gameState.VictoryState.Winner);
+		Assert.AreEqual (Gameplay.Player.O, gameState.VictoryState.Winner);
 	}
 
 	[Test, Timeout(10000)]

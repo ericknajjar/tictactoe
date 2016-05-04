@@ -1,21 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Gameplay
 {
+	
 	public class TicTacToeAi
 	{
 		AI.MiniMaxAI<AiStateAdapter,Move> m_miniMax = new AI.MiniMaxAI<AiStateAdapter,Move>();
+		bool m_perfect;
 
-
-		public TicTacToeAi ()
+		public TicTacToeAi (bool perfect = true)
 		{
-			
+			m_perfect = perfect;
 		}
 
 		public Move NextMove(GameState state)
 		{
 			var adapter = new AiStateAdapter (state);
+
+			if(!m_perfect)
+			{
+				var possibleMoves = state.PossibleMoves;
+				if (UnityEngine.Random.value < 0.1f) 
+				{
+					return possibleMoves [UnityEngine.Random.Range (0, possibleMoves.Count)];
+				}
+			}
 			
 			return m_miniMax.NextMove (adapter);
 		}
@@ -68,11 +79,11 @@ namespace Gameplay
 			{
 				get 
 				{
-					/*if (m_gameState.PossibleMoves.Count == 9)
-						return new List<Move>{  new Move (Point.Make (0, 0))};
+					if (m_gameState.PossibleMoves.Count == 9)
+						return new List<Move>{  new Move (Point.Make (1, 1))};
 					else if (m_gameState.PossibleMoves.Count == 8) 
 					{
-						var bestMove = new Move (Point.Make (0, 0));
+						var bestMove = new Move (Point.Make (1, 1));
 
 						if (m_gameState.PossibleMoves.Contains (bestMove))
 							return new List<Move>{ bestMove };
@@ -85,7 +96,7 @@ namespace Gameplay
 						}
 
 						return ret;
-					}*/
+					}
 
 					return new List<Move> (m_gameState.PossibleMoves);
 				}

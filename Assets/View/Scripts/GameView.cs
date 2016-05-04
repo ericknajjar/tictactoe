@@ -4,19 +4,20 @@ using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using u3dExtensions;
+using u3dExtensions.Engine.Runtime;
 
 namespace View
 {
 	public class GameView : MonoBehaviour 
 	{
 		[SerializeField]
-		MessageBox m_messageBox;
+		MessageBox m_messageBox=null;
 
 		[SerializeField]
 		List<Text> m_allTexts = new List<Text>();
 
 		Gameplay.GameState m_gameState = new Gameplay.GameState(Gameplay.Player.X);
-		Gameplay.TicTacToeAi m_ai = new Gameplay.TicTacToeAi();
+		Gameplay.TicTacToeAi m_ai;
 
 		bool m_botStarts = false;
 	
@@ -140,5 +141,17 @@ namespace View
 				
 		}
 
+		[BindingProvider]
+		public static GameView Create(bool perfect)
+		{
+			var prefab = Resources.Load<GameObject>("GameView");
+			var go = GameObject.Instantiate (prefab);
+			var view = go.GetComponent<GameView> ();
+
+			view.m_ai = new Gameplay.TicTacToeAi (perfect);
+
+			return view;
+
+		}
 	}
 }
