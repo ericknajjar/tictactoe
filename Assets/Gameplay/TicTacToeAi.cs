@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
+
 
 namespace Gameplay
 {
@@ -9,6 +9,7 @@ namespace Gameplay
 	{
 		AI.MiniMaxAI<AiStateAdapter,Move> m_miniMax = new AI.MiniMaxAI<AiStateAdapter,Move>();
 		bool m_perfect;
+		Random m_rnd = new Random ();
 
 		public TicTacToeAi (bool perfect = true)
 		{
@@ -22,9 +23,10 @@ namespace Gameplay
 			if(!m_perfect)
 			{
 				var possibleMoves = state.PossibleMoves;
-				if (UnityEngine.Random.value < 0.1f) 
+
+				if (m_rnd.NextDouble() < 0.1) 
 				{
-					return possibleMoves [UnityEngine.Random.Range (0, possibleMoves.Count)];
+					return possibleMoves [m_rnd.Next(0, possibleMoves.Count)];
 				}
 			}
 			
