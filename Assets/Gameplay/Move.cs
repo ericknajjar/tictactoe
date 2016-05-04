@@ -4,15 +4,16 @@ using System.Collections;
 namespace Gameplay 
 {
 	
-	public class Move 
+	public struct Move 
 	{
-		
+		Point m_target;
+
 		public Move(Point target)
 		{
-			Target = target;
+			m_target = target;
 		}
 
-		public Point Target{ get; private set;}
+		public Point Target{ get{ return m_target;}}
 
 		public override bool Equals (object obj)
 		{

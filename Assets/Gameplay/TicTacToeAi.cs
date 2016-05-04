@@ -7,6 +7,7 @@ namespace Gameplay
 	{
 		AI.MiniMaxAI<AiStateAdapter,Move> m_miniMax = new AI.MiniMaxAI<AiStateAdapter,Move>();
 
+
 		public TicTacToeAi ()
 		{
 			
@@ -23,6 +24,8 @@ namespace Gameplay
 		{
 			GameState m_gameState;
 			Player m_bot;
+
+			static List<Move> s_badSecondMoves = new List<Move>{new Move(Point.Make(1,0)),new Move(Point.Make(2,1)),new Move(Point.Make(1,2)),new Move(Point.Make(0,1)) };
 
 			public AiStateAdapter(GameState state)
 			{
@@ -61,8 +64,29 @@ namespace Gameplay
 				}
 			}
 
-			public System.Collections.Generic.IList<Move> AllMoves {
-				get {
+			public System.Collections.Generic.IList<Move> AllMoves 
+			{
+				get 
+				{
+					if (m_gameState.PossibleMoves.Count == 9)
+						return new List<Move>{  new Move (Point.Make (0, 0))};
+					else if (m_gameState.PossibleMoves.Count == 8) 
+					{
+						var bestMove = new Move (Point.Make (0, 0));
+
+						if (m_gameState.PossibleMoves.Contains (bestMove))
+							return new List<Move>{ bestMove };
+						
+						var ret = new List<Move> (m_gameState.PossibleMoves);
+
+						foreach(var bad in s_badSecondMoves)
+						{
+							ret.Remove (bad);
+						}
+
+						return ret;
+					}
+
 					return new List<Move> (m_gameState.PossibleMoves);
 				}
 			}
