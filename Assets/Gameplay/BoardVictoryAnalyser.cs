@@ -7,7 +7,7 @@ namespace Gameplay
 
 	public class BoardVictoryAnalyser
 	{
-		HashSet<CheckBoardStrategieDelegate> m_strategies = new HashSet<CheckBoardStrategieDelegate>();
+		List<CheckBoardStrategieDelegate> m_strategies = new List<CheckBoardStrategieDelegate>(4);
 
 		static readonly CheckBoardStrategieDelegate[] s_rows = new CheckBoardStrategieDelegate[]{FirstRow,SecondRow,ThirdRow};
 		static readonly CheckBoardStrategieDelegate[] s_columns = new CheckBoardStrategieDelegate[]{FirstColumn,SecondColumn,ThirdColumn};
@@ -19,9 +19,9 @@ namespace Gameplay
 
 		public Player Check(IBoard board)
 		{
-			foreach(var checkStrategy in m_strategies)
+			for(int i=0;i<m_strategies.Count;++i)
 			{
-				var checkResult = checkStrategy (board);
+				var checkResult = m_strategies[i] (board);
 		
 				if (!checkResult.Equals (Player.None))
 					return checkResult;
@@ -38,13 +38,14 @@ namespace Gameplay
 
 			if (p.X == p.Y)
 			{
+				
 				m_strategies.Add (LeftRightDiagonal);
 
 				if(p.X == 1)
 					m_strategies.Add (RightLeftDiagonal);
 			}
 
-			if(Math.Abs(p.X-p.Y) == 2)
+			if(Math.Abs(p.X-p.Y) == 2 && !m_strategies.Contains(RightLeftDiagonal))
 				m_strategies.Add (RightLeftDiagonal);
 		
 		}
@@ -102,6 +103,9 @@ namespace Gameplay
 			{
 				var point = points[i];
 				var cell = b [point];
+
+				if (cell.Owner.Equals (Player.None))
+					return Player.None;
 
 				if(i==0)
 					player = cell.Owner;

@@ -24,7 +24,6 @@ namespace Gameplay
 		{
 			m_board = rawData;
 			TrippletOwner = checkStrategie.Check(this);
-
 		}
 
 		private Board(Cell[,] rawData,Player tripletOwner)
@@ -47,15 +46,18 @@ namespace Gameplay
 		{
 			Cell[,] rawData = new Cell[3, 3];
 
+			int m_filledCells = 1;
 			ForeachCell ((cell, point) => {
 				rawData[point.X,point.Y] = cell;
+				if(!cell.Owner.Equals(Player.None))
+					++m_filledCells;
 			});
 
 			rawData[target.X, target.Y] = new Cell(player);
 
 			Board ret = null;
 
-			if(TrippletOwner.Equals(Player.None))
+			if(TrippletOwner.Equals(Player.None) && m_filledCells>=3)
 				ret = new Board (rawData, new BoardVictoryAnalyser(target));
 			else
 				ret = new Board (rawData, TrippletOwner);

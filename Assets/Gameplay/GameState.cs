@@ -61,7 +61,7 @@ public class GameState
 			get{
 				return !Winner.Equals (Player.None) || PossibleMoves.Count == 0;
 			}
-		}
+		} 
 
 		public Cell this[Point p]
 		{

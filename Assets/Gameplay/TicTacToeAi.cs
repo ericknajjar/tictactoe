@@ -23,6 +23,7 @@ namespace Gameplay
 		{
 			GameState m_gameState;
 			Player m_bot;
+
 			public AiStateAdapter(GameState state)
 			{
 				m_gameState = state;

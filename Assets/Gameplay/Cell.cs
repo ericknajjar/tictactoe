@@ -3,14 +3,14 @@ using System.Collections;
 
 namespace Gameplay
 {
-	public class Cell  
+	public struct Cell  
 	{
-
-		public Player Owner { get; private set;}
+		Player m_owner;
+		public Player Owner { get{ return m_owner;}}
 
 		public Cell(Player owner)
 		{
-			Owner = owner;
+			m_owner = owner;
 		}
 	}
 

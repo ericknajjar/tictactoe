@@ -31,6 +31,7 @@ namespace View
 					var move = m_ai.NextMove (m_gameState);
 					MakeAPlay (move);
 				}
+
 			}
 
 		}
@@ -61,17 +62,7 @@ namespace View
 				}
 				++index;
 			});
-
-			Debug.Log ("Winner: "+m_gameState.Winner);
-		}
-
-		[System.Serializable]
-		public class Seri
-		{
-			[SerializeField]
-			int a;
-			[SerializeField]
-			int b;
+				
 		}
 
 	}

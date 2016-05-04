@@ -4,6 +4,7 @@ using Moq;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using System.Text;
 
 [TestFixture]
 public class TicTacToeAiTests  
@@ -11,6 +12,12 @@ public class TicTacToeAiTests
 
 	AiCase m_starterAlmostWins = new AiCase(new List<Point>{Point.Make(0,0),Point.Make(0,2),Point.Make(1,0),Point.Make(1,2)},
 		new List<Point>{Point.Make(2,0)}, Gameplay.Player.X);
+
+	AiCase m_playOnTheCorners = new AiCase(new List<Point>{Point.Make(1,1)},
+		new List<Point>{Point.Make(0,0),Point.Make(2,0),Point.Make(0,2),Point.Make(2,2)}, Gameplay.Player.X);
+
+	AiCase m_openingMove = new AiCase(new List<Point>(),
+		new List<Point>{Point.Make(1,1),Point.Make(0,0),Point.Make(2,0),Point.Make(0,2),Point.Make(2,2)}, Gameplay.Player.X);
 
 	Gameplay.TicTacToeAi  m_ai = new Gameplay.TicTacToeAi ();
 
@@ -25,11 +32,38 @@ public class TicTacToeAiTests
 	[Test]
 	public void ChooseRightToVictoryMove1()
 	{
-		var move = m_ai.NextMove (m_starterAlmostWins.State);
+		TestAiCase (m_starterAlmostWins);
+	}
 
-		bool contains = m_starterAlmostWins.NextMoves.Contains (move);
+	[Test]
+	public void PlayOnCorners()
+	{
+		TestAiCase (m_playOnTheCorners);
+	}
 
-		Assert.That (contains, "Should be " + m_starterAlmostWins.NextMoves[0]+ " but was "+ move);
+
+	[Test]
+	public void OpeningMove()
+	{
+		TestAiCase (m_openingMove);
+	}
+
+	void TestAiCase(AiCase aiCase)
+	{
+		var move = m_ai.NextMove (aiCase.State);
+
+		bool contains = aiCase.NextMoves.Contains (move);
+
+		var list = new StringBuilder ();
+		list.Append ("[");
+		foreach(var possibleMove in aiCase.NextMoves)
+		{
+			list.Append (possibleMove);
+			list.Append (",");
+		}
+		list.Append ("]");
+
+		Assert.That (contains, move+" should be in" + list);
 	}
 
 	[Test, Timeout(10000)]
