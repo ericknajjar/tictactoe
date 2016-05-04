@@ -19,6 +19,7 @@ public class TicTacToeAiTests
 	AiCase m_openingMove = new AiCase(new List<Point>(),
 		new List<Point>{Point.Make(1,1),Point.Make(0,0),Point.Make(2,0),Point.Make(0,2),Point.Make(2,2)}, Gameplay.Player.X);
 
+
 	Gameplay.TicTacToeAi  m_ai = new Gameplay.TicTacToeAi ();
 
 	[Test]
@@ -64,6 +65,31 @@ public class TicTacToeAiTests
 		list.Append ("]");
 
 		Assert.That (contains, move+" should be in" + list);
+	}
+
+	[Test]
+	public void StrangeWeakCase()
+	{
+		List<Point> playerMoves = new List<Point>{ Point.Make(0,2),Point.Make(2,0),Point.Make(2,2),Point.Make(1,2) };
+		var gameState = new Gameplay.GameState (Gameplay.Player.X);
+
+		foreach(var point in playerMoves)
+		{
+			var move = new Gameplay.Move (point);
+
+			if (gameState.PossibleMoves.Contains (move))
+				gameState = gameState.PickAMove (move);
+			else
+				gameState = gameState.PickAMove (gameState.PossibleMoves[0]);
+
+			if (gameState.IsEndState)
+				break;
+
+			var aiMove = m_ai.NextMove (gameState);
+			gameState = gameState.PickAMove(aiMove);
+		}
+
+		Assert.AreEqual (Gameplay.Player.None, gameState.VictoryState.Winner);
 	}
 
 	[Test, Timeout(10000)]

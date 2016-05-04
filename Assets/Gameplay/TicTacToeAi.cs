@@ -68,7 +68,7 @@ namespace Gameplay
 			{
 				get 
 				{
-					if (m_gameState.PossibleMoves.Count == 9)
+					/*if (m_gameState.PossibleMoves.Count == 9)
 						return new List<Move>{  new Move (Point.Make (0, 0))};
 					else if (m_gameState.PossibleMoves.Count == 8) 
 					{
@@ -85,7 +85,7 @@ namespace Gameplay
 						}
 
 						return ret;
-					}
+					}*/
 
 					return new List<Move> (m_gameState.PossibleMoves);
 				}

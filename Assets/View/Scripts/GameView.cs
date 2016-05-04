@@ -18,6 +18,8 @@ namespace View
 		Gameplay.GameState m_gameState = new Gameplay.GameState(Gameplay.Player.X);
 		Gameplay.TicTacToeAi m_ai = new Gameplay.TicTacToeAi();
 
+		bool m_botStarts = false;
+	
 		public void OnQuitClicked()
 		{
 			SceneManager.LoadScene (0);
@@ -44,6 +46,11 @@ namespace View
 		{
 			Clear ();
 			m_gameState = new Gameplay.GameState (Gameplay.Player.X);
+			if (m_botStarts) 
+			{
+				var move = m_ai.NextMove (m_gameState);
+				MakeAPlay (move);
+			}
 		}
 
 		Point IndexToPoint(int index)
@@ -100,6 +107,7 @@ namespace View
 				}
 			}
 
+			m_botStarts = !m_botStarts;
 
 			m_messageBox.Show (msg).Map((u)=>{
 				NewGame();

@@ -13,7 +13,7 @@ namespace AI
 		public MoveType NextMove(State beginingState)
 		{
 			if(!beginingState.IsEndState)
-				return MiniMax (beginingState, -100,100).Move;
+				return MiniMax (beginingState, -1000,1000).Move;
 
 			throw new Exception ("Can't determine next move from an end state");
 		}
