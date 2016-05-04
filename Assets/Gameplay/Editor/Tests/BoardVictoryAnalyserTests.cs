@@ -101,9 +101,9 @@ namespace Gameplay
 			Assert.That (containsOnly);
 		}
 
-		bool ContainsOnly(BoardVictoryAnalyser strategie,params CheckBoardStrategieDelegate[] funcs)
+		bool ContainsOnly(BoardVictoryAnalyser strategie,params VictoryPatternStrategy[] funcs)
 		{
-			var others = new List<CheckBoardStrategieDelegate> (BoardVictoryAnalyser.All);
+			var others = new List<VictoryPatternStrategy> (BoardVictoryAnalyser.All);
 			others.RemoveAll ((d) => funcs.Contains (d));
 
 			bool containsOnly = true;

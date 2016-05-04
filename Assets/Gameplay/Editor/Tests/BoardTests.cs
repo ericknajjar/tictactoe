@@ -11,11 +11,11 @@ namespace Gameplay
 	public class BoardTests
 	{
 		[Test]
-		public void EmptyBoardHasNoTripplet()
+		public void EmptyBoardHasNoWinner()
 		{
 			var board = new Board ();
 
-			Assert.AreEqual (Player.None, board.TrippletOwner);
+			Assert.AreEqual (VictoryState.Indetermined, board.VictoryState);
 		}
 
 		[Test]
@@ -27,7 +27,7 @@ namespace Gameplay
 			board = board.SetCellOwner (Player.X, Point.Make (1, 0));
 			board = board.SetCellOwner (Player.X, Point.Make (2, 0));
 
-			Assert.AreEqual (Player.X, board.TrippletOwner);
+			Assert.AreEqual (Player.X, board.VictoryState.Winner);
 		}
 
 		[Test]
@@ -40,7 +40,7 @@ namespace Gameplay
 			board = board.SetCellOwner (Player.X, Point.Make (2, 0));
 			board = board.SetCellOwner (Player.X, Point.Make (0, 1));
 
-			Assert.AreEqual (Player.None, board.TrippletOwner);
+			Assert.AreEqual (Player.None,board.VictoryState.Winner);
 		}
 
 		[Test]
@@ -53,7 +53,7 @@ namespace Gameplay
 			board = board.SetCellOwner (Player.X, Point.Make (2, 1));
 			board = board.SetCellOwner (Player.X, Point.Make (0, 2));
 
-			Assert.AreEqual (Player.None, board.TrippletOwner);
+			Assert.AreEqual (Player.None,board.VictoryState.Winner);
 		}
 
 		[Test]
@@ -66,7 +66,7 @@ namespace Gameplay
 			board = board.SetCellOwner (Player.X, Point.Make (0, 2));
 
 
-			Assert.AreEqual (Player.X, board.TrippletOwner);
+			Assert.AreEqual (Player.X, board.VictoryState.Winner);
 		}
 
 		[Test]
@@ -79,7 +79,7 @@ namespace Gameplay
 			board = board.SetCellOwner (Player.X, Point.Make (1, 2));
 
 
-			Assert.AreEqual (Player.X, board.TrippletOwner);
+			Assert.AreEqual (Player.X, board.VictoryState.Winner);
 		}
 
 		[Test]
@@ -92,7 +92,7 @@ namespace Gameplay
 			board = board.SetCellOwner (Player.X, Point.Make (1, 2));
 			board = board.SetCellOwner (Player.X, Point.Make (2, 2));
 
-			Assert.AreEqual (Player.None, board.TrippletOwner);
+			Assert.AreEqual (Player.None,board.VictoryState.Winner);
 		}
 
 		[Test]
@@ -106,7 +106,7 @@ namespace Gameplay
 			board = board.SetCellOwner (Player.X, Point.Make (0, 1));
 			board = board.SetCellOwner (Player.X, Point.Make (0, 2));
 
-			Assert.AreEqual (Player.O, board.TrippletOwner);
+			Assert.AreEqual (Player.O,board.VictoryState.Winner);
 		}
 
 		[Test]
@@ -120,7 +120,7 @@ namespace Gameplay
 			board = board.SetCellOwner (Player.X, Point.Make (2, 1));
 			board = board.SetCellOwner (Player.X, Point.Make (2, 2));
 
-			Assert.AreEqual (Player.O, board.TrippletOwner);
+			Assert.AreEqual (Player.O, board.VictoryState.Winner);
 		}
 
 		[Test]
@@ -132,7 +132,7 @@ namespace Gameplay
 			board = board.SetCellOwner (Player.O, Point.Make (1, 0));
 			board = board.SetCellOwner (Player.X, Point.Make (1, 1));
 
-			Assert.AreEqual (Player.None, board.TrippletOwner);
+			Assert.AreEqual (Player.None,board.VictoryState.Winner);
 		}
 	}
 }

@@ -55,9 +55,9 @@ namespace Gameplay
 				get 
 				{
 					
-					if (m_gameState.Winner.Equals (m_bot))
+					if (m_gameState.VictoryState.Winner.Equals (m_bot))
 						return 10;
-					if (m_gameState.Winner.Equals (m_bot.Other))
+					if (m_gameState.VictoryState.Winner.Equals (m_bot.Other))
 						return -10;
 
 					return 0;

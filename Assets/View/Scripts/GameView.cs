@@ -3,11 +3,15 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using u3dExtensions;
 
 namespace View
 {
 	public class GameView : MonoBehaviour 
 	{
+		[SerializeField]
+		MessageBox m_messageBox;
+
 		[SerializeField]
 		List<Text> m_allTexts = new List<Text>();
 
@@ -21,32 +25,95 @@ namespace View
 
 		public void OnBoardButtonClicked(int index)
 		{
-			if (m_gameState.Winner.Equals (Gameplay.Player.None)) 
+			if (!m_gameState.IsEndState) 
 			{
 				var point = IndexToPoint (index);
-				MakeAPlay (new Gameplay.Move(point));
-
-				if (!m_gameState.IsEndState) 
+				if (MakeAPlay (new Gameplay.Move (point))) 
 				{
-					var move = m_ai.NextMove (m_gameState);
-					MakeAPlay (move);
+
+					if (!m_gameState.IsEndState) {
+						var move = m_ai.NextMove (m_gameState);
+						MakeAPlay (move);
+					}
 				}
 
-			}
+			} 
+		}
 
+		void NewGame()
+		{
+			Clear ();
+			m_gameState = new Gameplay.GameState (Gameplay.Player.X);
 		}
 
 		Point IndexToPoint(int index)
 		{
 			int y = index  % 3;
 			int x = index / 3;
+
 			return Point.Make (x, y);
 		}
 
-		void MakeAPlay(Gameplay.Move move)
+		int PointToIndex(Point point)
 		{
-			m_gameState = m_gameState.PickAMove (move);
-			UpdateView ();
+			for (int i = 0; i < 9; ++i)
+			{
+				var maybe = IndexToPoint (i);
+				if (maybe.Equals (point))
+					return i;
+
+			}
+
+			return -1;
+		}
+
+		bool MakeAPlay(Gameplay.Move move)
+		{
+			if (m_gameState.PossibleMoves.Contains (move))
+			{
+				m_gameState = m_gameState.PickAMove (move);
+				UpdateView ();
+
+				if (m_gameState.IsEndState) 
+				{
+					EndGame ();
+				}
+
+				return true;
+			}
+
+			return false;
+		}
+
+		void EndGame()
+		{
+			string msg = "It's a draw!";
+
+			if (!m_gameState.VictoryState.Winner.Equals (Gameplay.Player.None)) 
+			{
+				msg = m_gameState.VictoryState.Winner + " is the winner!";
+
+				foreach (var point in m_gameState.VictoryState.Pattern.Points) 
+				{
+					var index = PointToIndex (point);
+					m_allTexts [index].color = Color.red;
+				}
+			}
+
+
+			m_messageBox.Show (msg).Map((u)=>{
+				NewGame();
+
+			});
+		}
+
+		void Clear()
+		{
+			foreach (var text in m_allTexts)
+			{
+				text.text = "";
+				text.color = Color.black;
+			}
 		}
 
 		void UpdateView()

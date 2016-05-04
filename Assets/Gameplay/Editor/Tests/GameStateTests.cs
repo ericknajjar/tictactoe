@@ -135,7 +135,7 @@ namespace Gameplay
 				gameState = gameState.PickAMove (new Move (target));
 			}
 
-			Assert.AreEqual (Player.X, gameState.Winner);
+			Assert.AreEqual (Player.X, gameState.VictoryState.Winner);
 		}
 
 		[Test]
@@ -148,7 +148,7 @@ namespace Gameplay
 				gameState = gameState.PickAMove (new Move (target));
 			}
 
-			Assert.AreEqual (Player.O, gameState.Winner);
+			Assert.AreEqual (Player.O, gameState.VictoryState.Winner);
 		
 		}
 
@@ -162,7 +162,7 @@ namespace Gameplay
 				gameState = gameState.PickAMove (new Move (target));
 			}
 
-			Assert.AreEqual (Player.O, gameState.Winner);
+			Assert.AreEqual (Player.O, gameState.VictoryState.Winner);
 		}
 
 
@@ -176,7 +176,7 @@ namespace Gameplay
 				gameState = gameState.PickAMove (new Move (target));
 			}
 
-			Assert.AreEqual (Player.X, gameState.Winner);
+			Assert.AreEqual (Player.X, gameState.VictoryState.Winner);
 		}
 
 		[Test]
@@ -190,7 +190,7 @@ namespace Gameplay
 				break;
 			}
 
-			Assert.AreEqual (Player.None, gameState.Winner);
+			Assert.AreEqual (Player.None, gameState.VictoryState.Winner);
 		}
 
 		[Test]
@@ -210,7 +210,7 @@ namespace Gameplay
 		{
 			var gameState = new GameState (Player.X);
 
-			Assert.AreEqual (Player.None, gameState.Winner);
+			Assert.AreEqual (Player.None, gameState.VictoryState.Winner);
 		}
 
 		[Test]
@@ -223,10 +223,10 @@ namespace Gameplay
 			{
 				gameState = gameState.PickAMove (new Move (target));
 
-				alwaysNone = alwaysNone && gameState.Winner.Equals (Player.None);
+				alwaysNone = alwaysNone && gameState.VictoryState.Winner.Equals (Player.None);
 
 				if (!alwaysNone) {
-					Assert.Fail ( gameState.Winner+" should not have won");
+					Assert.Fail ( gameState.VictoryState.Winner+" should not have won");
 					break;
 				}
 					

@@ -3,31 +3,50 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace Gameplay
 {
-	public delegate Player CheckBoardStrategieDelegate(IBoard b);
 
 	public class BoardVictoryAnalyser
 	{
-		List<CheckBoardStrategieDelegate> m_strategies = new List<CheckBoardStrategieDelegate>(4);
+		List<VictoryPatternStrategy> m_strategies = new List<VictoryPatternStrategy>(4);
 
-		static readonly CheckBoardStrategieDelegate[] s_rows = new CheckBoardStrategieDelegate[]{FirstRow,SecondRow,ThirdRow};
-		static readonly CheckBoardStrategieDelegate[] s_columns = new CheckBoardStrategieDelegate[]{FirstColumn,SecondColumn,ThirdColumn};
+		static VictoryPatternStrategy[] s_rows;
+		static VictoryPatternStrategy[] s_columns;
 
-		enum DiagonalDirection
+		static BoardVictoryAnalyser()
 		{
-			LeftRight = 0, RightLeft = 2
+			FirstRow = new VictoryPatternStrategy (VictoryPattern.FirstRow);
+			 SecondRow = new VictoryPatternStrategy (VictoryPattern.SecondRow);
+			 ThirdRow = new VictoryPatternStrategy (VictoryPattern.ThirdRow);
+			
+			 FirstColumn = new VictoryPatternStrategy (VictoryPattern.FirstColumn);
+			 SecondColumn = new VictoryPatternStrategy (VictoryPattern.SecondColumn);
+			 ThirdColumn = new VictoryPatternStrategy (VictoryPattern.ThirdColumn);
+			
+			
+			 LeftRightDiagonal = new VictoryPatternStrategy (VictoryPattern.LeftRightDiagonal);
+			 RightLeftDiagonal = new VictoryPatternStrategy (VictoryPattern.RightLeftDiagonal);
+
+			s_rows = new VictoryPatternStrategy[]{FirstRow,SecondRow,ThirdRow};
+			s_columns = new VictoryPatternStrategy[]{FirstColumn,SecondColumn,ThirdColumn};
 		}
 
-		public Player Check(IBoard board)
+		public bool Contains(VictoryPatternStrategy strategie)
+		{
+			return m_strategies.Contains (strategie);
+		}
+
+		public VictoryState Check(IBoard board)
 		{
 			for(int i=0;i<m_strategies.Count;++i)
 			{
-				var checkResult = m_strategies[i] (board);
+				var strategie = m_strategies [i];
+				var checkResult = strategie.Check (board);
 		
 				if (!checkResult.Equals (Player.None))
-					return checkResult;
+					return new VictoryState (checkResult, strategie.Pattern);
+		
 			}
 
-			return Player.None;
+			return VictoryState.Indetermined;
 		}
 
 		public BoardVictoryAnalyser(Point p)
@@ -50,129 +69,23 @@ namespace Gameplay
 		
 		}
 
-		public bool Contains(CheckBoardStrategieDelegate func)
-		{
-			return m_strategies.Contains(func);
-		}
+		public static VictoryPatternStrategy FirstRow; 
+		public static VictoryPatternStrategy SecondRow;
+		public static VictoryPatternStrategy ThirdRow; 
 
-		static IList<Point> MakeRow(int index)
-		{
-			List<Point> list = new List<Point> (3);
+		public static VictoryPatternStrategy FirstColumn; 
+		public static VictoryPatternStrategy SecondColumn;
+		public static VictoryPatternStrategy ThirdColumn; 
 
-			for (int i = 0; i < 3; ++i) 
-			{
-				list.Add(Point.Make(i,index));
-			}
 
-			return list;
-		}
+		public static VictoryPatternStrategy LeftRightDiagonal;
+		public static VictoryPatternStrategy RightLeftDiagonal;
 
-		static IList<Point> MakeDiagonal(DiagonalDirection direction)
-		{
-			List<Point> list = new List<Point> (3);
-
-			int offset = (int)direction;
-			for (int i = 0; i < 3; ++i)
-			{
-				int x = Mathf.Abs(offset -i);
-				int y = i;
-
-				list.Add (Point.Make(x,y));
-			}
-
-			return list;
-		}
-
-		static IList<Point> MakeColumn(int index)
-		{
-			List<Point> list = new List<Point> (3);
-
-			for (int i = 0; i < 3; ++i) 
-			{
-				list.Add(Point.Make(index,i));
-			}
-
-			return list;
-		}
-
-		static Player Check(IBoard b,IList<Point> points)
-		{
-			Player player = Player.None;
-
-			for(int i =0;i<points.Count;++i) 
-			{
-				var point = points[i];
-				var cell = b [point];
-
-				if (cell.Owner.Equals (Player.None))
-					return Player.None;
-
-				if(i==0)
-					player = cell.Owner;
-				else
-				{
-					if (!player.Equals (cell.Owner)) 
-					{
-						return Player.None;
-					}
-				}
-
-			}
-			return player;
-		}
-
-		public static Player FirstRow(IBoard b)
-		{
-			var row = MakeRow (0);
-			return Check (b, row);
-		}
-
-		public static Player SecondRow(IBoard b)
-		{
-			var row = MakeRow (1);
-			return Check (b, row);
-		}
-
-		public static Player ThirdRow(IBoard b)
-		{
-			var row = MakeRow (2);
-			return Check (b, row);
-		}
-
-		public static Player FirstColumn(IBoard b)
-		{
-			var column = MakeColumn (0);
-			return Check (b, column);
-		}
-
-		public static Player SecondColumn(IBoard b)
-		{
-			var column = MakeColumn (1);
-			return Check (b, column);
-		}
-
-		public static Player ThirdColumn(IBoard b)
-		{
-			var column = MakeColumn (2);
-			return Check (b, column);
-		}
-
-		public static Player LeftRightDiagonal(IBoard b)
-		{
-			var diagonal = MakeDiagonal (DiagonalDirection.LeftRight);
-			return Check(b,diagonal);
-		}
-
-		public static Player RightLeftDiagonal(IBoard b)
-		{
-			var diagonal = MakeDiagonal (DiagonalDirection.RightLeft);
-			return Check(b,diagonal);
-		}
 			
-		public static IList<CheckBoardStrategieDelegate> All
+		public static IList<VictoryPatternStrategy> All
 		{
 			get {
-				return new List<CheckBoardStrategieDelegate>{ 
+				return new List<VictoryPatternStrategy>{ 
 					FirstRow,SecondRow,ThirdRow, FirstColumn,SecondColumn,
 					ThirdColumn, LeftRightDiagonal,RightLeftDiagonal,
 				};

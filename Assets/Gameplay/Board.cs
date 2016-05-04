@@ -8,14 +8,14 @@ namespace Gameplay
 
 		public Board()
 		{
-			TrippletOwner = Player.None;
+			VictoryState = VictoryState.Indetermined;
 			m_board = new Cell[3,3];
 			ForEachPoint((p)=>{
 				m_board[p.X,p.Y] = new Cell(Player.None);
 			});
 		}
 
-		public Player TrippletOwner {
+		public VictoryState VictoryState {
 			get;
 			private set;
 		}
@@ -23,14 +23,13 @@ namespace Gameplay
 		private Board(Cell[,] rawData,BoardVictoryAnalyser checkStrategie)
 		{
 			m_board = rawData;
-			TrippletOwner = checkStrategie.Check(this);
+			VictoryState = checkStrategie.Check(this);
 		}
 
-		private Board(Cell[,] rawData,Player tripletOwner)
+		private Board(Cell[,] rawData,VictoryState victoryState)
 		{
 			m_board = rawData;
-			TrippletOwner = tripletOwner;
-
+			VictoryState = victoryState;
 		}
 
 
@@ -57,10 +56,10 @@ namespace Gameplay
 
 			Board ret = null;
 
-			if(TrippletOwner.Equals(Player.None) && m_filledCells>=3)
+			if(VictoryState.Winner.Equals(Player.None) && m_filledCells>=3)
 				ret = new Board (rawData, new BoardVictoryAnalyser(target));
 			else
-				ret = new Board (rawData, TrippletOwner);
+				ret = new Board (rawData, VictoryState);
 
 			return ret;
 		}

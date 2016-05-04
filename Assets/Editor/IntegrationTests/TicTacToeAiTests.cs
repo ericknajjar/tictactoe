@@ -26,7 +26,7 @@ public class TicTacToeAiTests
 	{
 		var winningState = m_starterAlmostWins.State.PickAMove (m_starterAlmostWins.NextMoves [0]);
 
-		Assert.AreEqual (Gameplay.Player.X,winningState.Winner);
+		Assert.AreEqual (Gameplay.Player.X,winningState.VictoryState.Winner);
 	}
 
 	[Test]
@@ -78,9 +78,9 @@ public class TicTacToeAiTests
 
 		}
 
-		bool draw = gameState.PossibleMoves.Count == 0 && gameState.Winner.Equals (Gameplay.Player.None);
+		bool draw = gameState.PossibleMoves.Count == 0 && gameState.VictoryState.Winner.Equals (Gameplay.Player.None);
 
-		Assert.That (draw, "Move Count: "+gameState.PossibleMoves.Count+" Winner: "+gameState.Winner);
+		Assert.That (draw, "Move Count: "+gameState.PossibleMoves.Count+" Winner: "+gameState.VictoryState.Winner);
 	}
 
 	class AiCase

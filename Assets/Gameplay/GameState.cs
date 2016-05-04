@@ -11,7 +11,7 @@ namespace Gameplay
 public class GameState 
 {
 		public Player CurrentPlayer{ get; private set;}
-		public Player Winner{ get{ return m_board.TrippletOwner;}}
+		public VictoryState VictoryState{ get{ return m_board.VictoryState;}}
 
 		Board m_board;
 
@@ -59,7 +59,7 @@ public class GameState
 		public bool IsEndState
 		{
 			get{
-				return !Winner.Equals (Player.None) || PossibleMoves.Count == 0;
+				return !VictoryState.Winner.Equals (Player.None) || PossibleMoves.Count == 0;
 			}
 		} 
 
